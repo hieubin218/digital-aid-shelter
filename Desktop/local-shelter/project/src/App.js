@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { TextField, Button, Typography } from '@mui/material';
+import DonationForm from './components/DonationForm';
+import DonationRecord from './components/DonationRecord';
+
+/*
+Donation input Form: Create a form where users can input details of a donation. 
+  Fields to include: donor's name, type of donation(money, food, clothing, etc.), quantity or amount donated, and the date of the donation.
+Donation List: Display a list of recorded donations with their details. Include way to edit or delete a donation from the list.
+*/
 
 function App() {
+  const [donationList, setDonationList] = useState([]);
+
+  const handleSubmitForm = (formData) => {
+    setDonationList([...donationList, formData]);
+  }
+
+  const handleDeleteRow = (i) => {
+    setDonationList(
+      donationList.filter((_, index) => index !== i)
+    );
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <DonationForm onSubmit={handleSubmitForm}  />
+      <DonationRecord 
+        donationList={donationList} 
+        onDelete={handleDeleteRow}
+        />
     </div>
-  );
+  )
 }
 
 export default App;
