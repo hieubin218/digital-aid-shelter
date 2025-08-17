@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 
-
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -13,8 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Create full file path
-const filePath = path.join(__dirname, './data/donationRecords.json');
-
+const filePath = path.join(__dirname, 'donationRecords.json');
 
 // Because I use json file, there are two functions to manage json file (Read, Write)
 const readJsonFile = () => {
@@ -28,15 +25,15 @@ const updateJsonFile = (listOfDonation) => {
 }
 
 // Get a list of donation and display on the Table
-app.get('/list/donations', (req, res) => {
+app.get('/list-of-donations', (req, res) => {
     let donations = readJsonFile();
     res.json(donations);
 });
 
-
-// Add new donation
-app.post('/api/donations', (req, res) => {
+// Add new donation into JSON File
+app.post('/add-donation', (req, res) => {
     const donations = readJsonFile();
+    console.log("Backend: ", req.body);
     const newDonation = { id: Math.random(), ...req.body };
     donations.push(newDonation);
     updateJsonFile(donations);

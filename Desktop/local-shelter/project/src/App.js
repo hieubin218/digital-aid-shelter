@@ -11,20 +11,26 @@ Donation List: Display a list of recorded donations with their details. Include 
 function App() {
   const [donationList, setDonationList] = useState([]);
 
-
   // Front-end: Retrieve a list of donations through API
   useEffect(() => {
-    fetch("http://localhost:5001/list/donations")
+    fetch("http://localhost:5001/list-of-donations")
       .then(res => res.json())
       .then(data => setDonationList(data))
       .catch(err => console.error(err));
   }, []);
 
 
-
-  const handleSubmitForm = (formData) => {
-    setDonationList([...donationList, formData]);
-  }
+  const handleSubmitForm = (submitNewForm) => {
+    fetch("http://localhost:5001/add-donation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(submitNewForm)
+    })
+      .then(res => res.json())
+      .then(newDonation => {setDonationList([...donationList, newDonation])
+      })
+      .catch(err => console.error(err));
+  };
 
   const handleDeleteRow = (i) => {
     setDonationList(
