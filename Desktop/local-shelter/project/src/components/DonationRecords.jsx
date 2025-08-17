@@ -111,7 +111,7 @@ function DonationRecord({ donationList, onDelete, onUpdate }) {
                     ) : (
                         <>
                         <button onClick={() => startEditing(donation)}>Edit</button>
-                        <button onClick={() => onDelete(index)}>Delete</button>
+                        <button onClick={() => onDelete(donation.id)}>Delete</button>
                         </>
                     )}
                     </td>

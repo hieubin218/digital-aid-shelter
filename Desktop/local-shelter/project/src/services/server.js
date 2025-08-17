@@ -40,6 +40,32 @@ app.post('/add-donation', (req, res) => {
     res.status(201).json(newDonation);
 });
 
+// Modify existing donation information
+
+
+// Delete selected donation information
+app.delete('/delete-donation/:id', (req, res) => {
+    const listOfDonation = readJsonFile();
+
+    // Get id from selected donation
+    let donationID = Number(req.params.id);
+
+    // Iterate list of donations to find if any match donationID
+    let NewDonations = listOfDonation.filter(donation => donation.id !== donationID);
+
+    if (NewDonations.length === listOfDonation.length) {
+        return res.status(404).json({
+            message: "Donation not found!"
+        });
+    }
+
+    // If donation exists, update the list of donations
+    updateJsonFile(NewDonations);
+    res.json({
+        message: `Donation with ID: ${donationID} has been successfully deleted`
+    })
+});
+
 
 const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

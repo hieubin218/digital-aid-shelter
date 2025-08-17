@@ -19,7 +19,7 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
-
+  // FRONT-END: Send new Submitted Form to the back-end
   const handleSubmitForm = (submitNewForm) => {
     fetch("http://localhost:5001/add-donation", {
       method: "POST",
@@ -32,11 +32,21 @@ function App() {
       .catch(err => console.error(err));
   };
 
-  const handleDeleteRow = (i) => {
-    setDonationList(
-      donationList.filter((_, index) => index !== i)
-    );
-  }
+  // FRONT-END: Remove/Delete selected donation info in the Back-end
+  const handleDeleteRow = (id) => {
+    fetch(`http://localhost:5001/delete-donation/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(res => res.json())
+      .then(response => {
+        console.log("Backend:", response.message);
+
+        // Update frontend state only after backend confirms deletion
+        setDonationList(donationList.filter(donation => donation.id !== id));
+      })
+      .catch(err => console.error("Unable to delete:", err));
+  };
 
   // Use React Hook to check if a donation object is changed (delete/edit) from the list or not
   useEffect(() => {
