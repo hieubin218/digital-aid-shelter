@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DonationForm from './components/DonationForm';
-import DonationRecord from './components/DonationRecord';
+import DonationRecord from './components/DonationRecords';
 
 /*
 Donation input Form: Create a form where users can input details of a donation. 
@@ -10,6 +10,17 @@ Donation List: Display a list of recorded donations with their details. Include 
 
 function App() {
   const [donationList, setDonationList] = useState([]);
+
+
+  // Front-end: Retrieve a list of donations through API
+  useEffect(() => {
+    fetch("http://localhost:5001/list/donations")
+      .then(res => res.json())
+      .then(data => setDonationList(data))
+      .catch(err => console.error(err));
+  }, []);
+
+
 
   const handleSubmitForm = (formData) => {
     setDonationList([...donationList, formData]);
