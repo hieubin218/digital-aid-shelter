@@ -41,6 +41,24 @@ app.post('/add-donation', (req, res) => {
 });
 
 // Modify existing donation information
+app.put("/update-donation/:id", (request, response) => {
+    let listOfDonation = readJsonFile();
+    let selectedDonationID = Number(request.params.id);
+    
+    const updatedDonation = request.body;
+
+
+    // Find Index of donation object in JSON (Order Matter)
+    const index = listOfDonation.findIndex(donationObj => donationObj.id === selectedDonationID);
+
+    // Replace updated object to the index above (Order Matter)
+    listOfDonation[index] = {...listOfDonation[index], ...updatedDonation};
+    updateJsonFile(listOfDonation);
+
+    response.json({
+        message: `BACKEND: Update OK!`
+    })
+})
 
 
 // Delete selected donation information
@@ -49,6 +67,7 @@ app.delete('/delete-donation/:id', (req, res) => {
 
     // Get id from selected donation
     let donationID = Number(req.params.id);
+    console.log("donationID: ", req);
 
     // Iterate list of donations to find if any match donationID
     let NewDonations = listOfDonation.filter(donation => donation.id !== donationID);
@@ -62,7 +81,7 @@ app.delete('/delete-donation/:id', (req, res) => {
     // If donation exists, update the list of donations
     updateJsonFile(NewDonations);
     res.json({
-        message: `Donation with ID: ${donationID} has been successfully deleted`
+        message: `Donation ID: ${donationID} has been successfully deleted`
     })
 });
 
