@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import DonationForm from './components/DonationForm';
 import DonationRecord from './components/DonationRecord';
 
@@ -22,6 +21,19 @@ function App() {
     );
   }
 
+  // Use React Hook to check if a donation object is changed (delete/edit) from the list or not
+  useEffect(() => {
+    console.log(donationList);
+  }, [donationList]);
+
+
+  const handleEditDonation = (id, updatedData) => {
+    setDonationList(
+      donationList.map((donation) =>
+        donation.id === id ? { ...updatedData, id } : donation
+      )
+    );
+  };
 
   return (
     <div>
@@ -29,6 +41,7 @@ function App() {
       <DonationRecord 
         donationList={donationList} 
         onDelete={handleDeleteRow}
+        onUpdate={handleEditDonation}
         />
     </div>
   )
